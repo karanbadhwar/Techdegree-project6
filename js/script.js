@@ -130,10 +130,16 @@ button.appendChild(img);
 label.appendChild(button);
 const form = createEl('form');
 form.action = '#';
-form.method= 'get';
+form.method = 'get';
 form.appendChild(label);
 header.appendChild(form);
 
 input.addEventListener('keyup', e =>{
-   
+   let value = e.taregt.value;
+   for (let i = 0; i < data.length; i++){
+      const firstName = data[i].name.first.split('');
+      const lastName = data[i].name.last.split('');
+      const fullName = `${firstName}${lastName}`;
+      
+   }
 });
