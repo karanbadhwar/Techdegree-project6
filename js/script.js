@@ -3,6 +3,7 @@ Treehouse Techdegree: Data Pagination and Filtering
 */
 const itemsPerPage = 9;
 const ulLinkList = document.querySelector('.link-list');
+const studentList = document.querySelector('.student-list');
 const header = document.querySelector('.header');
 
 /*
@@ -26,7 +27,6 @@ This function will create and insert/append the elements needed to display a "pa
 function showPage (list, page){
    const startIndex = (page * itemsPerPage) - itemsPerPage;
    const endIndex = page * itemsPerPage;
-   const studentList = document.querySelector('.student-list');
    studentList.innerHTML = '';
    for (let i = 0; i < list.length; i++){
       if (i >= startIndex && i < endIndex){
@@ -69,7 +69,9 @@ function addPagination(list) {
 
       ulLinkList.insertAdjacentHTML('beforeend', button);
   }
+if (list.length > 0){
   ulLinkList.firstElementChild.firstElementChild.className = 'active';
+}
 }
 
 // Call functions
@@ -85,15 +87,16 @@ ulLinkList.addEventListener('click', e => {
             btn.firstElementChild.className = '';
       }
       pageButton.className = 'active';
+      const searchValue = document.querySelector('#search').value;
+      if (searchValue){
+         showPage(searchBar(searchValue),pageNumber);
+      }else {
       showPage(data, pageNumber);
    }
+}
 });
 
-{/* <label for="search" class="student-search">
-  <span>Search by name</span>
-  <input id="search" placeholder="Search by name...">
-  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-</label> */}
+
 /**
  * createEl function is just for code readability.
  * This functions Creates Elements as per the parameter passed into them.
@@ -135,11 +138,28 @@ form.appendChild(label);
 header.appendChild(form);
 
 input.addEventListener('keyup', e =>{
-   let value = e.taregt.value;
-   for (let i = 0; i < data.length; i++){
-      const firstName = data[i].name.first.split('');
-      const lastName = data[i].name.last.split('');
-      const fullName = `${firstName}${lastName}`;
-      
+   studentList.innerHTML = '';
+   let value = e.target.value.toLowerCase();
+   const newData = searchBar(value);
+   addPagination(newData);
+   showPage(newData, 1);
+    if (newData.length === 0) {
+      studentList.innerHTML = '<h1 style ="font-size: 2rem">No match Found!</h1>';
    }
 });
+/**
+ * searchBar unction creates a new array with the matched strings that the user typed and filter outs the objects from the data array,
+ * adding the matched results into the new array i.e newData
+ * @param {*} value value is the characters typed in the search bar
+ * @returns it returns a new array of object (Filtered out) to use for pagination
+ */
+function searchBar(value){
+   const newData = [];
+   for (let i = 0; i < data.length; i++){
+      let listName = data[i];
+      if (listName.name.first.toLowerCase().includes(value) || listName.name.last.toLowerCase().includes(value)){
+         newData.push(listName);
+      } 
+}
+return newData;
+}
