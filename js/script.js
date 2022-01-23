@@ -144,7 +144,7 @@ input.addEventListener('keyup', e =>{
    addPagination(newData);
    showPage(newData, 1);
     if (newData.length === 0) {
-      studentList.innerHTML = '<h1 style ="font-size: 2rem">No match Found!</h1>';
+      studentList.innerHTML = '<h1 style ="font-size: 3rem; margin: 0 auto;">No match Found!</h1>';
    }
 });
 /**
